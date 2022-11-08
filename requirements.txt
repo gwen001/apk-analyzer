@@ -1,0 +1,5 @@
+argparse
+requests
+colored
+queuelib
+bs4
