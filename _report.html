@@ -1,0 +1,189 @@
+<html>
+
+<head>
+    <title></title>
+    <style>
+        *, html, body {
+            font-size: 0.99em;
+        }
+        h1 + div {
+            margin-left: 60px;
+        }
+        h2 {
+            margin-left: 30px;
+        }
+        h2 + div {
+            margin-left: 60px;
+        }
+        h3 {
+            margin-left: 60px;
+        }
+        h3 + div {
+            margin-left: 90px;
+        }
+        h4 {
+            margin-left: 90px;
+        }
+        h5 {
+            margin-left: 120px;
+        }
+        h6 {
+            margin-left: 150px;
+        }
+        pre { 
+            border: 1px solid #000;
+            padding: 5px;
+        }
+        .command {
+            color: #AAA;
+        }
+        .grep { 
+            font-family: monospace;
+        }
+        .grep_filepath {
+            color: #00F;
+        }
+        .grep_line {
+            color: #5A5;
+        }
+        .grep_keyword {
+            color: #F00;
+        }
+        .hide {
+            color: #AAA;
+        }
+        .warning {
+            color: #F00;
+        }
+        .infos {
+            font-size: 10pt;
+            font-style: italic;
+        }
+        .unit {
+            margin-left: 150px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <ul id="menu"></ul>
+
+    <h1>Infos</h1>
+        <div id="infos">
+            <div>Date: {{ date }}</div>
+            <div>Package: {{ package_name }}</div>
+            <div>Build: {{ build }}</div>
+            <div>Directory: {{ directory }}</div>
+            <div>Source path: {{ source_path }}</div>
+        </div>
+    <hr />
+    <h1>Permissions</h1>
+        <h2>Created (&lt;permission>)</h2>
+            <div>{{ permissions_created }}</div>
+        <h2>Used (&lt;uses-permission>)</h2>
+            <div>{{ permissions_used }}</div>
+        <h2>Required (permission="")</h2>
+            <div>{{ permissions_required }}</div>
+    <hr />
+    <h1>IPCs</h1>
+        <h2>Activities</h2>
+            <div class="command">cat activities | while read a; do echo ">>> $a"; adb shell am start -S -n {{ package_name }}/$a; echo; echo; sleep 3; done | tee -a activities_run</div>
+            <h3>Activities from manifest</h3>
+                <div>{{ activities_manifest }}</div>
+            <h3>Activities from source grep</h3>
+                <div>{{ activities_srcgrep }}</div>
+        <h2>Fragments</h2>
+        <h2>Services</h2>
+            <h3>Services from manifest</h3>
+                <div>{{ services_manifest }}</div>
+            <h3>Services from source grep</h3>
+                <div>{{ services_srcgrep }}</div>
+        <h2>Receivers</h2>
+            <h3>Receivers from manifest</h3>
+                <div>{{ receivers_manifest }}</div>
+            <h3>Receivers from source grep</h3>
+                <div>{{ receivers_srcgrep }}</div>
+        <h2>Providers</h2>
+            <div class="command">cat providers | while read p; do echo ">>> $p"; adb shell content query $p; echo; sleep 1; done | tee -a providers_run</div>
+            <h3>Providers from manifest</h3>
+                <div>{{ providers_manifest }}</div>
+            <h3>Providers from source grep</h3>
+                <div>{{ providers_srcgrep }}</div>
+            <h3>URIs</h3>
+                <div>{{ providers_uris }}</div>
+        <h2>Intents</h2>
+            <div class="grep">{{ intent_grep }}</div>
+    <hr />
+    <h1>Files</h1>
+        <div>{{ files }}</div>
+    <hr />
+    <h1>Webview</h1>
+        <div class="grep">{{ webview_grep }}</div>
+    <hr />
+    <h1>Storage</h1>
+        <h2>Internal storage</h2>
+            <div class="grep">{{ internal_storage_grep }}</div>
+        <h2>External storage</h2>
+            <div class="grep">{{ external_storage_grep }}</div>
+    <hr />
+    <h1>Logs</h1>
+        <h2>android.util.Log</h2>
+            <div class="grep">{{ log_grep }}</div>
+        <h2>android.util.Slog</h2>
+            <div class="grep">{{ slog_grep }}</div>
+        <h2>android.util.EventLog</h2>
+            <div class="grep">{{ event_log_grep }}</div>
+        <h2>Timber</h2>
+            <div class="grep">{{ timber_grep }}</div>
+    <hr />
+    <h1>Certificate</h1>
+        <div class="grep">{{ certificate_grep }}</div>
+    <h1>Crypto</h1>
+        <div class="grep">{{ crypto_grep }}</div>
+    <hr />
+    <h1>File manipulation</h1>
+        <div class="grep">{{ file_manipulation_grep }}</div>
+    <hr />
+    <h1>Package install</h1>
+        <div class="grep">{{ package_grep }}</div>
+    <hr />
+    <h1>Other grep</h1>
+        <h2>Takeovers</h2>
+            <div class="grep">{{ takeovers_grep }}</div>
+        <h2>Keys</h2>
+            <div class="grep">{{ keys_grep }}</div>
+        <h2>External call</h2>
+            <div class="grep">{{ external_call_grep }}</div>
+        <h2>URLs</h2>
+            <div class="grep">{{ urls_grep }}</div>
+        <h2>IPs</h2>
+            <div class="grep">{{ ips_grep }}</div>
+        <h2>Strings</h2>
+            <div class="grep">{{ strings_grep }}</div>
+        <h2>Parameters</h2>
+            <div class="grep">{{ parameters_grep }}</div>
+        <h2>URL Parameters</h2>
+            <div class="grep">{{ url_parameters_grep }}</div>
+
+    <script type="text/javascript" src="jquery-3.4.1.slim.min.js"></script>
+    <script>
+        var cur = 1;
+        var str = '';
+        var menu = $('#menu');
+        $('body').find(':header').each(function(index){
+            lvl = $(this).prop('tagName').replace('H','');
+            if( lvl > cur ) {
+                str = str + '<ul>';
+            } else if( lvl < cur ) {
+                str = str + '</ul>';
+            }
+            cur = lvl;
+            str = str + '<li><a href="">' + $(this).text() + '</a></li>';
+        });
+        menu.append( str );
+    </script>
+
+</body>
+
+</html>
