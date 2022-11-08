@@ -1,6 +1,6 @@
 # apk-analyzer
 
-Analyze an APK archive and generate a HTML report.
+Analyze an extracted APK archive and generate a HTML report.
 
 ```
 $ python3 apk-analyzer.py -h
