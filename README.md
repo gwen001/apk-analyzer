@@ -14,3 +14,12 @@ options:
   -c, --command         display commands to run
   -m MOD, --mod MOD     mod to run
 ```
+
+
+# apk-downloader
+
+Mass download APKs listed in `package_names.txt`.
+
+```
+$ python3 apk-downloader.py
+```
