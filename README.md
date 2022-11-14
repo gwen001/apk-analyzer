@@ -2,6 +2,12 @@
 
 Analyze an extracted APK archive and generate a HTML report.
 
+## Install
+
+pip3 install -r requirements.txt
+
+## Usage
+
 ```
 $ python3 apk-analyzer.py -h
 usage: apk-analyzer.py [-h] [-d DIRECTORY] [-t TERM] [-c] [-m MOD]
@@ -19,6 +25,12 @@ options:
 # apk-downloader
 
 Mass download APKs listed in `package_names.txt`.
+
+## Install
+
+pip3 install -r requirements.txt
+
+## Usage
 
 ```
 $ python3 apk-downloader.py
