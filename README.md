@@ -9,7 +9,11 @@ Analyze an extracted APK archive and generate a HTML report.
 
 ## Install
 
+```
+git clone https://github.com/gwen001/apk-analyzer
+cd apk-analyzer
 pip3 install -r requirements.txt
+```
 
 ## Usage
 
