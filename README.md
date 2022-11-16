@@ -49,3 +49,8 @@ pip3 install -r requirements.txt
 ```
 $ python3 apk-downloader.py
 ```
+
+---
+
+Feel free to [open an issue](/../../issues/) if you have any problem with the script.  
+
