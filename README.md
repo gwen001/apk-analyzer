@@ -1,4 +1,5 @@
 # apk-analyzer
+
 <p align="left">
     <img src="https://img.shields.io/badge/python-v3-blue" alt="python badge">
     <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license badge">
@@ -33,11 +34,21 @@ options:
 
 # apk-downloader
 
+<p align="left">
+    <img src="https://img.shields.io/badge/python-v3-blue" alt="python badge">
+    <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license badge">
+    <a href="https://twitter.com/intent/tweet?text=https%3a%2f%2fgithub.com%2fgwen001%2fapk-analyzer%2f" target="_blank"><img src="https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fgwen001%2Fapk-analyzer" alt="twitter badge"></a>
+</p>
+
 Mass download APKs listed in `package_names.txt`.
 
 ## Install
 
+```
+git clone https://github.com/gwen001/apk-analyzer
+cd apk-analyzer
 pip3 install -r requirements.txt
+```
 
 ## Usage
 
