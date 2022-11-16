@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import math
 from multiprocessing import Process, Queue
 import os
@@ -254,7 +256,7 @@ def search_process(qi, qo):
         soup = BeautifulSoup(r.text, "html.parser")
 
         download_link = soup.find("a", {"id":"download_link"})
-        
+
         if download_link is None:
             send_error("%s is a paid or region app. Could not download" % package_name)
             continue
