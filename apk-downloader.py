@@ -115,6 +115,10 @@ def download_process(id_, qi, qo):
         else:
             qo.put((MSG_PAYLOAD, (id_, pkg_name, app_name, size, path)))
 
+    t_headers={
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:106.0) Gecko/20100101 Firefox/106.0",
+    }
+
     while True:
         message = qi.get()
 
@@ -124,7 +128,7 @@ def download_process(id_, qi, qo):
             break
 
         try:
-            r = requests.get(download_url, stream=True)
+            r = requests.get(download_url, headers=t_headers, stream=True)
         except requests.exceptions.ConnectionError:
             send_error("Connection error")
             continue
@@ -191,8 +195,38 @@ def search_process(qi, qo):
         elif message[0] == MSG_END:
             break
 
-        # Search page
-        # url = SEARCH_URL % package_name
+        download_apk_url = 'https://d.apkpure.com/b/APK/' + package_name + '?version=latest'
+        send_payload(package_name, package_name, download_apk_url)
+
+        # # Search page
+        # # url = SEARCH_URL % package_name
+        # # try:
+        # #     r = requests.get(url)
+        # # except requests.exceptions.ConnectionError:
+        # #     send_error("Connection error")
+        # #     continue
+
+        # # if r.status_code != 200:
+        # #     send_error("Could not get search page for %s" % package_name)
+        # #     continue
+
+        # # soup = BeautifulSoup(r.text, "html.parser")
+
+        # # first_result = soup.find("dl", class_="search-dl")
+        # # if first_result is None:
+        # #     send_error("Could not find %s" % package_name)
+        # #     continue
+
+        # # search_title = first_result.find("p", class_="search-title")
+        # # search_title_a = search_title.find("a")
+
+        # # app_name = search_title.text.strip()
+        # # app_url = search_title_a.attrs["href"]
+
+        # app_url = '/aaaaaaaaaaaaa/' + package_name
+
+        # # App page
+        # url = DOMAIN + app_url
         # try:
         #     r = requests.get(url)
         # except requests.exceptions.ConnectionError:
@@ -200,70 +234,43 @@ def search_process(qi, qo):
         #     continue
 
         # if r.status_code != 200:
-        #     send_error("Could not get search page for %s" % package_name)
+        #     send_error("Could not get app page for %s" % package_name)
+        #     continue
+
+        # soup = BeautifulSoup(r.text, "html.parser")
+        # app_name = package_name
+        # # app_name = search_title.text.strip()
+
+        # download_button = soup.find("a", {"class":"da"})
+        # if download_button is None:
+        #     send_error("%s is a paid app. Could not download" % package_name)
+        #     continue
+
+        # download_url = download_button.attrs["href"]
+
+        # # Download app page
+        # url = DOMAIN + download_url
+        # try:
+        #     r = requests.get(url)
+        # except requests.exceptions.ConnectionError:
+        #     send_error("Connection error")
+        #     continue
+
+        # if r.status_code != 200:
+        #     send_error("Could not get app download page for %s" % package_name)
         #     continue
 
         # soup = BeautifulSoup(r.text, "html.parser")
 
-        # first_result = soup.find("dl", class_="search-dl")
-        # if first_result is None:
-        #     send_error("Could not find %s" % package_name)
+        # download_link = soup.find("a", {"id":"download_link"})
+
+        # if download_link is None:
+        #     send_error("%s is a paid or region app. Could not download" % package_name)
         #     continue
 
-        # search_title = first_result.find("p", class_="search-title")
-        # search_title_a = search_title.find("a")
+        # download_apk_url = download_link.attrs["href"]
 
-        # app_name = search_title.text.strip()
-        # app_url = search_title_a.attrs["href"]
-
-        app_url = '/aaaaaaaaaaaaa/' + package_name
-
-        # App page
-        url = DOMAIN + app_url
-        try:
-            r = requests.get(url)
-        except requests.exceptions.ConnectionError:
-            send_error("Connection error")
-            continue
-
-        if r.status_code != 200:
-            send_error("Could not get app page for %s" % package_name)
-            continue
-
-        soup = BeautifulSoup(r.text, "html.parser")
-        app_name = package_name
-        # app_name = search_title.text.strip()
-
-        download_button = soup.find("a", {"class":"da"})
-        if download_button is None:
-            send_error("%s is a paid app. Could not download" % package_name)
-            continue
-
-        download_url = download_button.attrs["href"]
-
-        # Download app page
-        url = DOMAIN + download_url
-        try:
-            r = requests.get(url)
-        except requests.exceptions.ConnectionError:
-            send_error("Connection error")
-            continue
-
-        if r.status_code != 200:
-            send_error("Could not get app download page for %s" % package_name)
-            continue
-
-        soup = BeautifulSoup(r.text, "html.parser")
-
-        download_link = soup.find("a", {"id":"download_link"})
-
-        if download_link is None:
-            send_error("%s is a paid or region app. Could not download" % package_name)
-            continue
-
-        download_apk_url = download_link.attrs["href"]
-
-        send_payload(package_name, app_name, download_apk_url)
+        # send_payload(package_name, app_name, download_apk_url)
 
 
 def main():
@@ -285,8 +292,8 @@ def main():
 
 
     # CSV file header
-    with open(OUTPUT_CSV, "w+") as csv:
-        csv.write("App name,Package name,Size,Location\n")
+    # with open(OUTPUT_CSV, "w+") as csv:
+    #     csv.write("App name,Package name,Size,Location\n")
 
 
     # Message-passing queues

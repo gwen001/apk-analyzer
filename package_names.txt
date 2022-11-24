@@ -1,0 +1,3 @@
+fr.tf1.mytf1
+com.beinsports.andcontent
+com.edf.edfetmoi

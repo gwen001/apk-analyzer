@@ -69,5 +69,9 @@ $ python3 apk-downloader.py
 
 ---
 
+<img src="https://raw.githubusercontent.com/gwen001/apk-analyzer/master/preview-downloader.gif" />
+
+---
+
 Feel free to [open an issue](/../../issues/) if you have any problem with the script.  
 
