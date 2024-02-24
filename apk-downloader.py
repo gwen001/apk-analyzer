@@ -14,7 +14,8 @@ try:
     from queue import Full as FullQueueException
 except ImportError:
     # Python 2
-    from Queue import Empty as EmptyQueueException
+    from 
+    import Empty as EmptyQueueException
     from Queue import Full as FullQueueException
 
 from bs4 import BeautifulSoup
